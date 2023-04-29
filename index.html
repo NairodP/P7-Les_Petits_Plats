@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="apple-touch-icon"
+      sizes="120x120"
+      href="assets/favicon/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="assets/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="assets/favicon/favicon-16x16.png"
+    />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <link
+      href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap"
+      rel="stylesheet"
+    />
+    <title>Les petits plats</title>
+  </head>
+  <body>
+    <header>
+      <a href="#" title="Accueil les petits plats">
+        <img
+          src="assets/logo.png"
+          class="logo"
+          alt="Les petits plats Home page"
+        />
+      </a>
+    </header>
+
+    <main id="main-content">
+      <div class="input-searchBar">
+        <input type="text" id="search" placeholder="Rechercher une recette" />
+        <label for="search">
+          <img src="assets/img/search.svg" alt="Loupe barre de recherche" />
+        </label>
+      </div>
+
+      <div id="tag-filter-container">
+        <!-- ici les mots clefs sous forme de tags -->
+        <div class="tag-filter">
+          <span>Sucre</span>
+          <img
+            src="assets/img/cross-circle.svg"
+            alt="Supprimer le filtre sucre"
+          />
+        </div>
+      </div>
+
+      <div id="filters">
+
+        <div class="input-container">
+          <div class="input-group blue">
+            <input type="text" id="ingredients" placeholder="Ingrédients" />
+            <img
+              src="assets/img/chevron.svg"
+              alt="Afficher les ingredients"
+              class="rotation"
+              data-list="ingredients-list"
+              data-input="ingredients"
+            />
+          </div>
+          <ul class="ingredients-list"></ul>
+        </div>
+
+        <div class="input-container">
+          <div class="input-group green">
+
+          <input type="text" id="appareils" placeholder="Appareils" />
+          <img
+            src="assets/img/chevron.svg"
+            alt="Afficher les appareils"
+            class="rotation"
+            data-list="appareils-list"
+            data-input="appareils"
+          />
+          </div>
+          <ul class="appareils-list"></ul>
+        </div>
+
+        <div class="input-container">
+          <div class="input-group red">
+
+          <input type="text" id="ustensiles" placeholder="Ustensiles" />
+          <img
+            src="assets/img/chevron.svg"
+            alt="Afficher les ustensiles"
+            class="rotation"
+            data-list="ustensiles-list"
+            data-input="ustensiles"
+          />
+          </div>
+          <ul class="ustensiles-list"></ul>
+        </div>
+      </div>
+    </main>
+
+    <section id="recettes"><!-- ici les recettes --></section>
+
+    <!-- point d'entrée -->
+    <script src="scripts/index.js" type="module"></script>
+  </body>
+</html>
