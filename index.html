@@ -49,59 +49,55 @@
 
       <div id="tag-filter-container">
         <!-- ici les mots clefs sous forme de tags -->
-        <div class="tag-filter">
+        <!-- <div class="tag-filter">
           <span>Sucre</span>
           <img
             src="assets/img/cross-circle.svg"
             alt="Supprimer le filtre sucre"
           />
-        </div>
+        </div> -->
       </div>
 
       <div id="filters">
-
-        <div class="input-container">
-          <div class="input-group blue">
+        <div class="dropdown" data-dropdown>
+          <div class="input-group">
             <input type="text" id="ingredients" placeholder="Ingrédients" />
-            <img
+            <input
+              type="image"
               src="assets/img/chevron.svg"
               alt="Afficher les ingredients"
-              class="rotation"
-              data-list="ingredients-list"
-              data-input="ingredients"
+              data-dropdown-button
             />
           </div>
-          <ul class="ingredients-list"></ul>
+          <ul class="ingredients-list dropdown-menu">
+            
+          </ul>
         </div>
 
-        <div class="input-container">
-          <div class="input-group green">
-
-          <input type="text" id="appareils" placeholder="Appareils" />
-          <img
-            src="assets/img/chevron.svg"
-            alt="Afficher les appareils"
-            class="rotation"
-            data-list="appareils-list"
-            data-input="appareils"
-          />
+        <div class="dropdown" data-dropdown>
+          <div class="input-group">
+            <input type="text" id="appareils" placeholder="Appareils" />
+            <input
+              type="image"
+              src="assets/img/chevron.svg"
+              alt="Afficher les appareils"
+              data-dropdown-button
+            />
           </div>
-          <ul class="appareils-list"></ul>
+          <ul class="appareils-list dropdown-menu"></ul>
         </div>
 
-        <div class="input-container">
-          <div class="input-group red">
-
-          <input type="text" id="ustensiles" placeholder="Ustensiles" />
-          <img
-            src="assets/img/chevron.svg"
-            alt="Afficher les ustensiles"
-            class="rotation"
-            data-list="ustensiles-list"
-            data-input="ustensiles"
-          />
+        <div class="dropdown" data-dropdown>
+          <div class="input-group">
+            <input type="text" id="ustensiles" placeholder="Ustensiles" />
+            <input
+              type="image"
+              src="assets/img/chevron.svg"
+              alt="Afficher les ustensiles"
+              data-dropdown-button
+            />
           </div>
-          <ul class="ustensiles-list"></ul>
+          <ul class="ustensiles-list dropdown-menu"></ul>
         </div>
       </div>
     </main>

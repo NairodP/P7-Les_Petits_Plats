@@ -1,41 +1,43 @@
 import { recipes } from "../data/recette.js";
+import { displayResults } from "./card.js";
 import {
-  // displayRecipes,
-  displayResults,
-} from "./card.js";
-import { placeholders, getInputsValues, ingredientsDisp, ustensilesDisp, appareilsDisp } from "./filters.js";
-import { getTagFilterText, removeTagFilterOnClick } from "./appliedFilters.js";
+  placeholders,
+  populateDropdown,
+  handleDropdowns,
+} from "./filters.js";
 
 // Attend que le document HTML soit chargé
 document.addEventListener("DOMContentLoaded", () => {
-  // Tableau de tous les filtres actifs
-  getTagFilterText();
-
-  // Appelle la fonction removeTagFilterOnClick
-  removeTagFilterOnClick();
+  placeholders();
+  handleDropdowns();
+  populateDropdown();
 });
 
 // Fonction de recherche par mot clé
 function searchRecipes(keyword) {
   const results = [];
-  // Boucle à travers chaque recette
-  for (let i = 0; i < recipes.length; i++) {
-    const recipe = recipes[i];
-    // Vérifie si le nom ou la description de la recette contient le mot clé
-    if (
-      recipe.name.toLowerCase().includes(keyword.toLowerCase()) ||
-      recipe.description.toLowerCase().includes(keyword.toLowerCase())
-    ) {
-      results.push(recipe);
-    } else {
-      // Vérifie si un des ingrédients de la recette contient le mot clé
-      for (let j = 0; j < recipe.ingredients.length; j++) {
-        const ingredient = recipe.ingredients[j];
-        if (
-          ingredient.ingredient.toLowerCase().includes(keyword.toLowerCase())
-        ) {
-          results.push(recipe);
-          break;
+
+  // Vérifie si le mot-clé a au moins 3 caractères
+  if (keyword.length >= 3) {
+    // Boucle à travers chaque recette
+    for (let i = 0; i < recipes.length; i++) {
+      const recipe = recipes[i];
+      // Vérifie si le nom ou la description de la recette contient le mot clé
+      if (
+        recipe.name.toLowerCase().includes(keyword.toLowerCase()) ||
+        recipe.description.toLowerCase().includes(keyword.toLowerCase())
+      ) {
+        results.push(recipe);
+      } else {
+        // Vérifie si un des ingrédients de la recette contient le mot clé
+        for (let j = 0; j < recipe.ingredients.length; j++) {
+          const ingredient = recipe.ingredients[j];
+          if (
+            ingredient.ingredient.toLowerCase().startsWith(keyword.toLowerCase())
+          ) {
+            results.push(recipe);
+            break;
+          }
         }
       }
     }
@@ -56,11 +58,6 @@ searchInput.addEventListener("input", function () {
     const results = searchRecipes(keyword);
     // Affichage des résultats dans la console
     console.log(results);
-    // displayRecipes(results);
     displayResults(results);
   }
 });
-
-//////////
-
-

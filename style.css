@@ -90,7 +90,6 @@ li {
 
 .tag-filter {
   display: inline-block;
-  background-color: #286bff;
   border-radius: 5px;
   padding: 8px 15px;
   margin-right: 10px;
@@ -99,6 +98,7 @@ li {
 }
 
 .tag-filter span {
+  text-transform: capitalize;
   font-size: 20px;
   color: #ffffff;
   margin-right: 14px;
@@ -111,7 +111,6 @@ li {
   width: 25px;
   height: 25px;
   vertical-align: middle;
-  margin-bottom: 2px;
   cursor: pointer;
 }
 
@@ -119,17 +118,18 @@ li {
 
 #filters {
   display: flex;
-  align-items: center;
   margin-top: 20px;
 }
 
-.input-container {
+.dropdown {
   display: flex;
-  flex-direction: column;
   border-radius: 5px;
+  align-items: baseline;
   margin-right: 20px;
   height: 70px;
   box-shadow: 0px 4px 12px rgb(0 0 0 / 0.25);
+  position: relative;
+  max-width: 100%;
 }
 
 .input-group {
@@ -137,33 +137,34 @@ li {
   align-items: center;
   height: 100%;
   padding: 0 15px 0 10px;
-  border-radius: 5px;
+  position: relative;
+  min-width: 100%;
 }
 
-.input-container:nth-child(1),
-.blue,
-.blue input {
+.dropdown:nth-child(1),
+.dropdown:nth-child(1) input[type="text"],
+.ingredients-list {
   background-color: var(--ingredients-color);
 }
 
-.input-container:nth-child(2),
-.green,
-.green input {
+.dropdown:nth-child(2),
+.dropdown:nth-child(2) input[type="text"],
+.appareils-list {
   background-color: var(--appareils-color);
 }
 
-.input-container:nth-child(3),
-.red,
-.red input {
+.dropdown:nth-child(3),
+.dropdown:nth-child(3) input[type="text"],
+.ustensiles-list {
   background-color: var(--ustensiles-color);
 }
 
-.input-group img {
+.input-group input[type="image"] {
   width: 35px;
   position: relative;
 }
 
-.input-group input {
+.input-group input[type="text"] {
   width: 100%;
   font-size: 23px;
   font-family: var(--font);
@@ -172,27 +173,65 @@ li {
   color: white;
 }
 
-.input-group input::placeholder {
+.input-group input[type="text"]::placeholder {
   color: white;
   padding-left: 3px;
   font-size: 24px;
   font-family: var(--font);
 }
 
-.rotation {
-  transition: transform 0.3s ease-in-out;
-}
-
-.rotation.clicked {
-  transform: rotate(180deg);
-}
-
-.ingredients-list,
-.appareils-list,
-.ustensiles-list {
+.dropdown-menu {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  color: black;
+  padding: 20px;
+  border-radius: 0 0 5px 5px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-10px);
+  transition: opacity 150ms ease-in-out, transform 150ms ease-in-out;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  grid-template-columns: repeat(3, max-content);
+  row-gap: 20px;
+  column-gap: 50px;
+  padding-left: 30px;
+}
+
+.dropdown-menu li {
+  max-width: 100%;
+  font-size: 19px;
+  color: #fff;
+  font-family: var(--font);
+  text-transform: capitalize;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.dropdown-menu > li[data-no-match="true"] {
+  grid-template-columns: 1;
+}
+
+.dropdown.active .dropdown-menu {
+  border-top: none;
+  width: 100%;
+  opacity: 1;
+  transform: translateY(0px);
+  pointer-events: auto;
+}
+
+/* Ajouté */
+.dropdown.active {
+  border-radius: 5px 5px 0 0;
+  width: 50%;
+  position: relative;
+  border-bottom: none;
+}
+
+.rotation {
+  transform: rotate(180deg);
+  transition: transform 200ms ease-in-out;
 }
 
 /* ///// */
