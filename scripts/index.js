@@ -16,6 +16,16 @@ document.addEventListener("DOMContentLoaded", () => {
   infosContainer.style.display = "none"; // Masquer infosContainer
 });
 
+document.addEventListener("selectedItemsUpdated", performSearch);
+
+// Récupération de l'input
+const searchInput = document.querySelector("#search");
+
+// Récupération de l'élément conteneur de la suggestion
+const infosContainer = document.querySelector("#infos-container");
+
+searchInput.addEventListener("input", performSearch);
+
 // Fonction de recherche par mot clé
 function searchRecipes(keyword) {
   const results = [];
@@ -50,12 +60,6 @@ function searchRecipes(keyword) {
   return results;
 }
 
-// Récupération de l'input
-const searchInput = document.querySelector("#search");
-
-// Récupération de l'élément conteneur de la suggestion
-const infosContainer = document.querySelector("#infos-container");
-
 function displaySuggestion(message) {
   // Effacement du contenu précédent
   infosContainer.innerHTML = "";
@@ -88,6 +92,7 @@ function hideResults() {
   recettesContainer.innerHTML = "";
 }
 
+// effectue une recherche en filtrant les recettes en fonction d'un mot-clé et des éléments sélectionnés, puis affiche les résultats
 function performSearch() {
   const keyword = searchInput.value.trim();
 
@@ -106,9 +111,7 @@ function performSearch() {
       for (let j = 0; j < recipe.ingredients.length; j++) {
         const ingredient = recipe.ingredients[j];
         if (
-          ingredient.ingredient
-            .toLowerCase()
-            .startsWith(keyword.toLowerCase())
+          ingredient.ingredient.toLowerCase().startsWith(keyword.toLowerCase())
         ) {
           return true;
         }
@@ -150,6 +153,3 @@ function performSearch() {
     displayResults(results);
   }
 }
-
-searchInput.addEventListener("input", performSearch);
-document.addEventListener("selectedItemsUpdated", performSearch);

@@ -235,17 +235,26 @@ function getFilteredItems(inputSelector, itemList, listSelector) {
 
 // Utilise getFilteredItems
 function getFilteredIngredients() {
-  return getFilteredItems("#ingredients", allIngredients, ".ingredients-list");
+  const filteredIngredients = getFilteredItems("#ingredients", allIngredients, ".ingredients-list");
+  return filteredIngredients.filter((ingredient) => {
+    return !selectedItems.some((item) => item.name.toLowerCase() === ingredient.toLowerCase());
+  });
 }
 
 // Utilise getFilteredItems
 function getFilteredUstensils() {
-  return getFilteredItems("#ustensiles", allUstensils, ".ustensiles-list");
+  const filteredUstensils = getFilteredItems("#ustensiles", allUstensils, ".ustensiles-list");
+  return filteredUstensils.filter((ustensil) => {
+    return !selectedItems.some((item) => item.name.toLowerCase() === ustensil.toLowerCase());
+  });
 }
 
 // Utilise getFilteredItems
 function getFilteredAppliances() {
-  return getFilteredItems("#appareils", allAppliances, ".appareils-list");
+  const filteredAppliances = getFilteredItems("#appareils", allAppliances, ".appareils-list");
+  return filteredAppliances.filter((appliance) => {
+    return !selectedItems.some((item) => item.name.toLowerCase() === appliance.toLowerCase());
+  });
 }
 
 // Fonction pour remplir les listes déroulantes
@@ -416,7 +425,7 @@ function sortRecipes() {
   return filteredRecipes; // Retourne les recettes filtrées
 }
 
-// Supprime un élément de la liste des filtres sélectionnés, met à jour les recettes filtrées, et restaure l'élément supprimé dans la liste déroulante
+// Supprime un élément de la liste des filtres sélectionnés, met à jour les recettes filtrées
 function removeTagFilterOnClick() {
   tagFilterContainer.addEventListener("click", (event) => {
     const tagFilterImage = event.target.closest(".tag-filter img");
