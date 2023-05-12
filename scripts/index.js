@@ -1,82 +1,3 @@
-// import { recipes } from "../data/recette.js";
-// import { displayResults } from "./card.js";
-// import {
-//   placeholders,
-//   populateDropdown,
-//   handleDropdowns,
-//   filteredRecipes,
-// } from "./filters.js";
-
-// // Attend que le document HTML soit chargé
-// document.addEventListener("DOMContentLoaded", () => {
-//   placeholders();
-//   handleDropdowns();
-//   populateDropdown();
-// });
-
-// // Fonction de recherche par mot clé
-// function searchRecipes(keyword) {
-//   const results = [];
-
-//   // Vérifie si le mot-clé a au moins 3 caractères
-//   if (keyword.length >= 3) {
-//     // Boucle à travers chaque recette
-//     for (let i = 0; i < recipes.length; i++) {
-//       const recipe = recipes[i];
-//       // Vérifie si le nom ou la description de la recette contient le mot clé
-//       if (
-//         recipe.name.toLowerCase().includes(keyword.toLowerCase()) ||
-//         recipe.description.toLowerCase().includes(keyword.toLowerCase())
-//       ) {
-//         results.push(recipe);
-//       } else {
-//         // Vérifie si un des ingrédients de la recette contient le mot clé
-//         for (let j = 0; j < recipe.ingredients.length; j++) {
-//           const ingredient = recipe.ingredients[j];
-//           if (
-//             ingredient.ingredient.toLowerCase().startsWith(keyword.toLowerCase())
-//           ) {
-//             results.push(recipe);
-//             break;
-//           }
-//         }
-//       }
-//     }
-//   }
-//   return results;
-// }
-
-// // Récupération de l'input
-// const searchInput = document.querySelector("#search");
-
-// // Ajout d'un événement d'écoute pour la recherche
-// searchInput.addEventListener("input", function () {
-//   const keyword = this.value.trim();
-
-//   if (filteredRecipes.length === 0) {
-//     // Effectuer la recherche sur toutes les recettes
-//     if (keyword.length < 3) {
-//       console.log("Saisir au moins 3 caractères pour lancer la recherche");
-//     } else {
-//       const results = searchRecipes(keyword);
-//       console.log(results);
-//       displayResults(results);
-//     }
-//   } else {
-//     // Effectuer la recherche sur les recettes filtrées
-//     if (keyword.length < 3) {
-//       console.log("Saisir au moins 3 caractères pour lancer la recherche");
-//     } else {
-//       const results = searchRecipes(keyword);
-//       const filteredResults = filteredRecipes.filter((recipe) =>
-//         results.includes(recipe)
-//       );
-//       console.log(filteredResults);
-//       displayResults(filteredResults);
-//     }
-//   }
-// });
-
 import { recipes } from "../data/recette.js";
 import { displayResults } from "./card.js";
 import {
@@ -84,6 +5,7 @@ import {
   populateDropdown,
   handleDropdowns,
   filteredRecipes,
+  selectedItems,
 } from "./filters.js";
 
 // Attend que le document HTML soit chargé
@@ -91,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   placeholders();
   handleDropdowns();
   populateDropdown();
+  infosContainer.style.display = "none"; // Masquer infosContainer
 });
 
 // Fonction de recherche par mot clé
@@ -131,66 +54,102 @@ function searchRecipes(keyword) {
 const searchInput = document.querySelector("#search");
 
 // Récupération de l'élément conteneur de la suggestion
-const suggestionContainer = document.querySelector("#results-container");
+const infosContainer = document.querySelector("#infos-container");
 
 function displaySuggestion(message) {
+  // Effacement du contenu précédent
+  infosContainer.innerHTML = "";
+
+  // Création de l'élément de l'icône/image
+  const warningImg = document.createElement("img");
+  warningImg.src = "assets/img/warning.svg";
+  warningImg.alt = "Icon Warning";
+  // Appliquez les classes CSS ou les attributs nécessaires à votre icône/image
+
   // Création du paragraphe avec le message de la suggestion
   const paragraph = document.createElement("p");
   paragraph.textContent = message;
 
-  // Effacement du contenu précédent
-  suggestionContainer.innerHTML = "";
-
-  // Ajout du paragraphe à la suggestion
-  suggestionContainer.appendChild(paragraph);
+  // Ajout de l'icône/image et du paragraphe à la suggestion
+  infosContainer.appendChild(warningImg);
+  infosContainer.appendChild(paragraph);
 
   // Affichage de la suggestion
-  suggestionContainer.style.display = "block";
+  infosContainer.style.display = "flex";
 }
 
 function hideSuggestion() {
   // Masquage de la suggestion
-  suggestionContainer.style.display = "none";
+  infosContainer.style.display = "none";
 }
 
-// Ajout d'un événement d'écoute pour la recherche
-searchInput.addEventListener("input", function () {
-  const keyword = this.value.trim();
+function hideResults() {
+  const recettesContainer = document.getElementById("recettes");
+  recettesContainer.innerHTML = "";
+}
 
-  if (!filteredRecipes || filteredRecipes.length === 0) {
-    // Effectuer la recherche sur toutes les recettes
-    if (keyword.length < 3) {
-      console.log("Saisir au moins 3 caractères pour lancer la recherche");
-      displaySuggestion("Vous devez saisir au moins 3 lettres pour lancer la recherche ou utiliser un filtre.");
-    } else {
-      const results = searchRecipes(keyword);
-      console.log(results);
+function performSearch() {
+  const keyword = searchInput.value.trim();
 
-      if (results.length === 0) {
-        displaySuggestion("Aucun résultat... Vous pouvez écrire Tomate, Chocolat, Mixer, Passoire, etc...");
-      } else {
-        hideSuggestion();
+  if (selectedItems.length > 0) {
+    // Filtrer les recettes filtrées avec searchInput
+    const filteredResults = filteredRecipes.filter((recipe) => {
+      // Vérifier si le nom ou la description de la recette contient le mot clé
+      if (
+        recipe.name.toLowerCase().includes(keyword.toLowerCase()) ||
+        recipe.description.toLowerCase().includes(keyword.toLowerCase())
+      ) {
+        return true;
       }
 
-      displayResults(results);
+      // Vérifier si un des ingrédients de la recette contient le mot clé
+      for (let j = 0; j < recipe.ingredients.length; j++) {
+        const ingredient = recipe.ingredients[j];
+        if (
+          ingredient.ingredient
+            .toLowerCase()
+            .startsWith(keyword.toLowerCase())
+        ) {
+          return true;
+        }
+      }
+
+      return false;
+    });
+
+    if (filteredResults.length === 0 && keyword.length < 3) {
+      displaySuggestion(
+        "Aucun résultat... Vous pouvez écrire Tomate, Chocolat, Mixer, Passoire, etc..."
+      );
+    } else {
+      hideSuggestion();
     }
+
+    displayResults(filteredResults);
   } else {
-    // Effectuer la recherche sur les recettes filtrées
     if (keyword.length < 3) {
-      console.log("Saisir au moins 3 caractères pour lancer la recherche");
-      displaySuggestion("Vous devez saisir au moins 3 lettres pour lancer la recherche ou utiliser un filtre.");
-    } else {
-      const results = searchRecipes(keyword);
-      const filteredResults = filteredRecipes.filter((recipe) => results.includes(recipe));
-      console.log(filteredResults);
-
-      if (filteredResults.length === 0) {
-        displaySuggestion("Aucun résultat... Vous pouvez écrire Tomate, Chocolat, Mixer, Passoire, etc...");
-      } else {
-        hideSuggestion();
-      }
-
-      displayResults(filteredResults);
+      hideResults();
+      displaySuggestion(
+        "Vous devez saisir au moins 3 lettres ou utiliser un filtre pour lancer la recherche."
+      );
+      return;
     }
+
+    // Effectuer la recherche sur toutes les recettes
+    const results = searchRecipes(keyword);
+    console.log(results);
+
+    if (results.length === 0) {
+      displaySuggestion(
+        "Aucun résultat... Vous pouvez écrire Tomate, Chocolat, Mixer, Passoire, etc..."
+      );
+    } else {
+      hideSuggestion();
+    }
+
+    displayResults(results);
   }
-});
+}
+
+searchInput.addEventListener("input", performSearch);
+document.addEventListener("selectedItemsUpdated", performSearch);

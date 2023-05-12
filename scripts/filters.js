@@ -1,5 +1,6 @@
-import { recipes } from "../data/recette.js";
+import { recipes } from "../data/recette.js"; // Importation des données de recette
 
+// Fonction pour afficher les placeholders dans les inputs
 export function placeholders() {
   const filtersInputs = document.querySelectorAll(".dropdown input");
   const placeholders = [];
@@ -33,6 +34,7 @@ export function placeholders() {
   }
 }
 
+// Fonction pour gérer les menus déroulants
 export function handleDropdowns() {
   // Écouteur d'événement pour les clics sur la page
   document.addEventListener("click", (e) => {
@@ -298,6 +300,8 @@ function listenLiClick() {
           filteredRecipes = triRecettes();
           console.log("liste des recettes qui matchent :");
           console.log(filteredRecipes);
+
+          document.dispatchEvent(new Event("selectedItemsUpdated"));
         }
       }
     });
@@ -374,6 +378,8 @@ function removeTagFilterOnClick() {
         console.log("liste des recettes qui matchent :");
         console.log(filteredRecipes);
       }
+
+      document.dispatchEvent(new Event("selectedItemsUpdated"));
     }
   });
 }
@@ -408,4 +414,4 @@ function createTag(selectedItem) {
   tagFilterContainer.append(tagFilter);
 }
 
-export { filteredRecipes };
+export { filteredRecipes, selectedItems };
