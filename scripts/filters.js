@@ -235,26 +235,90 @@ function getFilteredItems(inputSelector, itemList, listSelector) {
 
 // Utilise getFilteredItems
 function getFilteredIngredients() {
-  const filteredIngredients = getFilteredItems("#ingredients", allIngredients, ".ingredients-list");
-  return filteredIngredients.filter((ingredient) => {
-    return !selectedItems.some((item) => item.name.toLowerCase() === ingredient.toLowerCase());
-  });
+  if (filteredRecipes && filteredRecipes.length > 0) {
+    const sortResult = sortRecipes();
+    const matchingIngredients = sortResult.matchingIngredients;
+
+    const filteredIngredients = getFilteredItems(
+      "#ingredients",
+      matchingIngredients,
+      ".ingredients-list"
+    );
+    return filteredIngredients.filter((ingredient) => {
+      return !selectedItems.some(
+        (item) => item.name.toLowerCase() === ingredient.toLowerCase()
+      );
+    });
+  } else {
+    const filteredIngredients = getFilteredItems(
+      "#ingredients",
+      allIngredients,
+      ".ingredients-list"
+    );
+    return filteredIngredients.filter((ingredient) => {
+      return !selectedItems.some(
+        (item) => item.name.toLowerCase() === ingredient.toLowerCase()
+      );
+    });
+  }
 }
 
 // Utilise getFilteredItems
 function getFilteredUstensils() {
-  const filteredUstensils = getFilteredItems("#ustensiles", allUstensils, ".ustensiles-list");
-  return filteredUstensils.filter((ustensil) => {
-    return !selectedItems.some((item) => item.name.toLowerCase() === ustensil.toLowerCase());
-  });
+  if (filteredRecipes && filteredRecipes.length > 0) {
+    const sortResult = sortRecipes();
+    const matchingUstensils = sortResult.matchingUstensils;
+    const filteredUstensils = getFilteredItems(
+      "#ustensiles",
+      matchingUstensils,
+      ".ustensiles-list"
+    );
+    return filteredUstensils.filter((ustensil) => {
+      return !selectedItems.some(
+        (item) => item.name.toLowerCase() === ustensil.toLowerCase()
+      );
+    });
+  } else {
+    const filteredUstensils = getFilteredItems(
+      "#ustensiles",
+      allUstensils,
+      ".ustensiles-list"
+    );
+    return filteredUstensils.filter((ustensil) => {
+      return !selectedItems.some(
+        (item) => item.name.toLowerCase() === ustensil.toLowerCase()
+      );
+    });
+  }
 }
 
 // Utilise getFilteredItems
 function getFilteredAppliances() {
-  const filteredAppliances = getFilteredItems("#appareils", allAppliances, ".appareils-list");
-  return filteredAppliances.filter((appliance) => {
-    return !selectedItems.some((item) => item.name.toLowerCase() === appliance.toLowerCase());
-  });
+  if (filteredRecipes && filteredRecipes.length > 0) {
+    const sortResult = sortRecipes();
+    const matchingAppliances = sortResult.matchingAppliances;
+    const filteredAppliances = getFilteredItems(
+      "#appareils",
+      matchingAppliances,
+      ".appareils-list"
+    );
+    return filteredAppliances.filter((appliance) => {
+      return !selectedItems.some(
+        (item) => item.name.toLowerCase() === appliance.toLowerCase()
+      );
+    });
+  } else {
+    const filteredAppliances = getFilteredItems(
+      "#appareils",
+      allAppliances,
+      ".appareils-list"
+    );
+    return filteredAppliances.filter((appliance) => {
+      return !selectedItems.some(
+        (item) => item.name.toLowerCase() === appliance.toLowerCase()
+      );
+    });
+  }
 }
 
 // Fonction pour remplir les listes déroulantes
@@ -363,7 +427,8 @@ function listenLiClick() {
             li.remove();
 
             // Appelle la fonction sortRecipes pour mettre à jour les recettes filtrées en fonction des éléments sélectionnés
-            filteredRecipes = sortRecipes();
+            const result = sortRecipes();
+            filteredRecipes = result.filteredRecipes;
             console.log("Liste des recettes correspondantes :");
             console.log(filteredRecipes);
 
@@ -422,7 +487,44 @@ function sortRecipes() {
     });
   }
 
-  return filteredRecipes; // Retourne les recettes filtrées
+  const matchingIngredients = [];
+  const matchingUstensils = [];
+  const matchingAppliances = [];
+
+  filteredRecipes.forEach((recipe) => {
+    recipe.ingredients.forEach((ingredient) => {
+      const lowerCaseIngredient = ingredient.ingredient.toLowerCase().trim();
+      const singularIngredient = singularize(lowerCaseIngredient); // Appliquer la fonction `singularize()`
+      if (!matchingIngredients.includes(singularIngredient)) {
+        matchingIngredients.push(singularIngredient);
+      }
+    });
+
+    recipe.ustensils.forEach((ustensil) => {
+      const lowerCaseUstensil = ustensil.toLowerCase().trim();
+      const singularUstensil = singularize(lowerCaseUstensil); // Appliquer la fonction `singularize()`
+      if (!matchingUstensils.includes(singularUstensil)) {
+        matchingUstensils.push(singularUstensil);
+      }
+    });
+
+    const lowerCaseAppliance = recipe.appliance.toLowerCase().trim();
+    const singularAppliance = singularize(lowerCaseAppliance); // Appliquer la fonction `singularize()`
+    if (!matchingAppliances.includes(singularAppliance)) {
+      matchingAppliances.push(singularAppliance);
+    }
+  });
+
+  console.log("Matching Ingredients:", matchingIngredients);
+  console.log("Matching Ustensils:", matchingUstensils);
+  console.log("Matching Appliances:", matchingAppliances);
+
+  return {
+    filteredRecipes, // Retourne les recettes filtrées
+    matchingIngredients,
+    matchingUstensils,
+    matchingAppliances,
+  };
 }
 
 // Supprime un élément de la liste des filtres sélectionnés, met à jour les recettes filtrées
@@ -449,7 +551,8 @@ function removeTagFilterOnClick() {
         console.log("liste des recettes qui matchent :");
         console.log(filteredRecipes);
       } else {
-        filteredRecipes = sortRecipes();
+        const result = sortRecipes();
+        filteredRecipes = result.filteredRecipes;
         console.log("liste d'item sélectionné(s) :");
         console.log(selectedItems);
         console.log("liste des recettes qui matchent :");
