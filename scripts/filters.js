@@ -360,8 +360,14 @@ export function populateDropdown() {
       // Efface le contenu de la liste
       list.innerHTML = "";
 
+      console.log("test :");
+      console.log(filteredItems);
+      console.log(inputValue);
+      console.log("nimp");
+      console.log("nimp");
+
       // Vérifie s'il n'y a aucun élément filtré et que la valeur d'entrée n'est pas vide
-      if (filteredItems.length === 0 && inputValue !== "") {
+      if (filteredItems.length === 0) {
         // Crée un élément li pour afficher le message "Aucun élément ne correspond à votre recherche..."
         const li = document.createElement("li");
         li.setAttribute("data-no-match", "true");
@@ -397,8 +403,9 @@ function listenLiClick() {
       const li = event.target.closest("li");
 
       if (li) {
+        const isNoResultSpan = li.querySelector("span");
         // Vérifie si l'élément parent (ul) existe
-        if (li.parentNode) {
+        if (li.parentNode && !isNoResultSpan) {
           // Crée un objet représentant l'élément sélectionné avec son nom et le type de liste
           const selectedItem = {
             name: li.textContent.trim(),

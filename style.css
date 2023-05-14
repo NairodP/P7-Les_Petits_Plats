@@ -211,6 +211,8 @@ li {
 
 .dropdown-menu > li[data-no-match="true"] {
   grid-template-columns: 1;
+  pointer-events: none;
+  cursor: default;
 }
 
 .dropdown.active .dropdown-menu {
