@@ -28,35 +28,20 @@ searchInput.addEventListener("input", performSearch);
 
 // Fonction de recherche par mot clé
 function searchRecipes(keyword) {
-  const results = [];
-
-  // Vérifie si le mot-clé a au moins 3 caractères
-  if (keyword.length >= 3) {
-    // Boucle à travers chaque recette
-    for (let i = 0; i < recipes.length; i++) {
-      const recipe = recipes[i];
-      // Vérifie si le nom ou la description de la recette contient le mot clé
-      if (
-        recipe.name.toLowerCase().includes(keyword.toLowerCase()) ||
-        recipe.description.toLowerCase().includes(keyword.toLowerCase())
-      ) {
-        results.push(recipe);
-      } else {
-        // Vérifie si un des ingrédients de la recette contient le mot clé
-        for (let j = 0; j < recipe.ingredients.length; j++) {
-          const ingredient = recipe.ingredients[j];
-          if (
-            ingredient.ingredient
-              .toLowerCase()
-              .startsWith(keyword.toLowerCase())
-          ) {
-            results.push(recipe);
-            break;
-          }
-        }
-      }
-    }
-  }
+  // Crée un tableau vide pour stocker les résultats de la recherche
+  const results = recipes.filter(
+      (recipe) =>
+          // Vérifie si le nom de la recette contient le mot clé (ignorant la casse)
+          recipe.name.toLowerCase().includes(keyword.toLowerCase()) ||
+          // Vérifie si la description de la recette contient le mot clé (ignorant la casse)
+          recipe.description.toLowerCase().includes(keyword.toLowerCase()) ||
+          // Utilise la méthode some pour vérifier si l'un des ingrédients de la recette contient le mot clé (ignorant la casse)
+          recipe.ingredients.some((ingredient) =>
+              ingredient.ingredient.toLowerCase().includes(keyword.toLowerCase())
+          )
+  );
+  
+  // Retourne le tableau des résultats de la recherche
   return results;
 }
 
@@ -111,7 +96,7 @@ function performSearch() {
       for (let j = 0; j < recipe.ingredients.length; j++) {
         const ingredient = recipe.ingredients[j];
         if (
-          ingredient.ingredient.toLowerCase().startsWith(keyword.toLowerCase())
+          ingredient.ingredient.toLowerCase().includes(keyword.toLowerCase())
         ) {
           return true;
         }
