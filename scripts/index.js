@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   placeholders();
   handleDropdowns();
   populateDropdown();
+  performSearch();
   infosContainer.style.display = "none"; // Masquer infosContainer
 });
 
@@ -43,6 +44,11 @@ function searchRecipes(keyword) {
   
   // Retourne le tableau des résultats de la recherche
   return results;
+}
+
+function displayAllRecipes() {
+  const allResults = [...recipes];
+  displayResults(allResults);
 }
 
 function displaySuggestion(message) {
@@ -117,6 +123,7 @@ function performSearch() {
   } else {
     if (keyword.length < 3) {
       hideResults();
+      displayAllRecipes(); // Afficher toutes les recettes
       displaySuggestion(
         "Vous devez saisir au moins 3 lettres ou utiliser un filtre pour lancer la recherche."
       );

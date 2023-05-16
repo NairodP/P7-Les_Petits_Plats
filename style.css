@@ -264,7 +264,7 @@ li {
 
 #infos-container {
   margin: 20px 80px;
-  padding: 30px 30px;
+  padding: 0 30px;
   font-size: 25px;
   font-family: var(--font);
 }
